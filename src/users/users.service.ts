@@ -14,7 +14,7 @@ export class UsersService {
   private readonly logger = new Logger(UsersService.name);
   constructor(
     private readonly prisma: PrismaService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
   ) {}
 
   async create(CreateUserDto: CreateUserDto) {
@@ -24,7 +24,7 @@ export class UsersService {
       throw new BadRequestException('already exist a user with this email');
     }
     CreateUserDto.password = await this.authService.EncryptPassword(
-      CreateUserDto.password
+      CreateUserDto.password,
     );
     return this.prisma.user.create({ data: CreateUserDto });
   }
@@ -63,7 +63,7 @@ export class UsersService {
       throw new NotFoundException('user not found exception');
     }
     user.password = await this.authService.EncryptPassword(
-      updateUserDto.password
+      updateUserDto.password,
     );
     return this.prisma.user.update({
       where: { id },
@@ -93,7 +93,7 @@ export class UsersService {
     }
 
     const newPassword = await this.authService.EncryptPassword(
-      forgetPasswordDTO.password
+      forgetPasswordDTO.password,
     );
 
     return this.prisma.user.update({
