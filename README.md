@@ -4,26 +4,11 @@ Backend API for a test platform, built with NestJS and Prisma.
 
 ## How to run
 
-1. Start the database with Docker:
 ```bash
-docker compose up -d
+docker compose up --build
 ```
 
-2. Run Prisma migrations:
-```bash
-npx prisma migrate dev
-```
-
-3. Create a `.env` file in the project root:
-```
-JWTSECRET=your-secret-key
-DATABASE_URL=postgresql://postgres:1234@localhost:6000/db_questions
-```
-
-4. Start the application:
-```bash
-nest start
-```
+This will start the database and the API automatically. Migrations run on startup.
 
 ## Routes
 
