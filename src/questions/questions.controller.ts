@@ -56,7 +56,8 @@ export class QuestionsController {
 
   @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.questionsService.remove(id);
+  remove(@Param('id') id: string, @Req() req: RequestWithUser) {
+    const userid = req.user.id;
+    return this.questionsService.remove(id, userid);
   }
 }

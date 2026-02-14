@@ -83,3 +83,5 @@ Protected routes require the header `Authorization: Bearer <token>`.
 ```
 
 The question `userId` is automatically obtained from the logged in user's token.
+
+Only the creator of the question can update or delete it.

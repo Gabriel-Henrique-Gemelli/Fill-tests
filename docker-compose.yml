@@ -9,7 +9,30 @@ services:
       - "7000:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
 
+  api:
+    container_name: api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    entrypoint: sh -c 'sleep 5 && npx prisma migrate deploy && npm run start'
+    ports:
+      - 3000:3000
+    environment:
+      DATABASE_URL: postgresql://postgres:1234@db:5432/db_questions
+      JWTSECRET: your-secret-key
+    volumes:
+      - .:/app/
+      - /app/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: on-failure
 
 volumes:
   pgdata:

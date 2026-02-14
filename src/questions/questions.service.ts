@@ -107,9 +107,14 @@ export class QuestionsService {
     });
   }
 
-  async remove(id: string) {
+  async remove(id: string, userId: string) {
     this.logger.log(`Deleting question with id: ${id}`);
-    await this.findOne(id);
+    const question = await this.findOne(id);
+    if (question.userId !== userId) {
+      throw new BadRequestException(
+        'Only the creator of the question can update',
+      );
+    }
     await this.prisma.question.delete({ where: { id } });
     return { deletedQuestionId: id };
   }
